@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const carImages = {
   toyota: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800",
@@ -82,9 +83,7 @@ const AvailableCars = () => {
       </p>
 
       {filteredCars.length === 0 ? (
-        <p className="text-center text-red-500 text-xl">
-          No cars found
-        </p>
+        <p className="text-center text-red-500 text-xl">No cars found</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredCars.map((car) => (
@@ -101,9 +100,11 @@ const AvailableCars = () => {
               <p>Location: {car.location}</p>
               <p>Status: {car.availability}</p>
 
-              <button className="bg-red-500 text-white px-4 py-2 rounded mt-4">
-                View Details
-              </button>
+              <Link to={`/cars/${car._id}`}>
+                <button className="bg-red-500 text-white px-4 py-2 rounded mt-4">
+                  View Details
+                </button>
+              </Link>
             </div>
           ))}
         </div>
