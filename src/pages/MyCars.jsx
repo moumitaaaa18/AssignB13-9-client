@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 
 const carImages = {
   toyota: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800",
@@ -33,9 +34,7 @@ const MyCars = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const confirmDelete = confirm(
-      "Are you sure you want to delete this car?"
-    );
+    const confirmDelete = confirm("Are you sure you want to delete this car?");
 
     if (confirmDelete) {
       fetch(`http://localhost:5000/cars/${id}`, {
@@ -43,10 +42,7 @@ const MyCars = () => {
       })
         .then((res) => res.json())
         .then(() => {
-          const remainingCars = cars.filter(
-            (car) => car._id !== id
-          );
-
+          const remainingCars = cars.filter((car) => car._id !== id);
           setCars(remainingCars);
         });
     }
@@ -54,56 +50,59 @@ const MyCars = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 py-16 px-6 md:px-10">
-      <h2 className="text-4xl font-bold text-center mb-4">
-        My Added Cars
-      </h2>
+      <h2 className="text-4xl font-bold text-center mb-4">My Added Cars</h2>
 
       <p className="text-center text-gray-500 mb-12">
-        Manage your added rental cars
+        Manage only the cars you added
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {cars.map((car) => (
-          <div
-            key={car._id}
-            className="bg-white rounded-3xl shadow-lg overflow-hidden"
-          >
-            <img
-              src={getCarImage(car)}
-              alt={car.carModel}
-              className="w-full h-52 object-cover"
-            />
+      {cars.length === 0 ? (
+        <p className="text-center text-xl text-gray-500">
+          You have not added any car yet.
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {cars.map((car) => (
+            <div
+              key={car._id}
+              className="bg-white rounded-3xl shadow-lg overflow-hidden"
+            >
+              <img
+                src={getCarImage(car)}
+                alt={car.carModel}
+                className="w-full h-52 object-cover"
+              />
 
-            <div className="p-5">
-              <h3 className="text-2xl font-bold">
-                {car.carModel}
-              </h3>
+              <div className="p-5">
+                <h3 className="text-2xl font-bold">{car.carModel}</h3>
 
-              <div className="mt-3 space-y-1 text-gray-600">
-                <p>Type: {car.carType}</p>
-                <p>
-                  Price: ৳{car.dailyRentalPrice}/day
-                </p>
-                <p>Location: {car.location}</p>
-                <p>Status: {car.availability}</p>
-              </div>
+                <div className="mt-3 space-y-1 text-gray-600">
+                  <p>Type: {car.carType}</p>
+                  <p>Price: ৳{car.dailyRentalPrice}/day</p>
+                  <p>Location: {car.location}</p>
+                  <p>Status: {car.availability}</p>
+                </div>
 
-              <div className="flex gap-3 mt-6">
-                <button className="flex-1 bg-blue-500 hover:bg-blue-600 duration-300 text-white py-2 rounded-xl">
-                  Update
-                </button>
+                <div className="flex gap-3 mt-6">
+                  <Link
+                    to={`/update-car/${car._id}`}
+                    className="flex-1 bg-blue-500 hover:bg-blue-600 duration-300 text-white py-2 rounded-xl text-center"
+                  >
+                    Update
+                  </Link>
 
-                <button
-                  onClick={() => handleDelete(car._id)}
-                  className="flex-1 bg-red-500 hover:bg-red-600 duration-300 text-white py-2 rounded-xl"
-                >
-                  Delete
-                </button>
+                  <button
+                    onClick={() => handleDelete(car._id)}
+                    className="flex-1 bg-red-500 hover:bg-red-600 duration-300 text-white py-2 rounded-xl"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
