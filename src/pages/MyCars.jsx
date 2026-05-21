@@ -26,7 +26,7 @@ const MyCars = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
+    fetch("http://localhost:5000/my-cars")
       .then((res) => res.json())
       .then((data) => setCars(data))
       .catch((error) => console.log(error));

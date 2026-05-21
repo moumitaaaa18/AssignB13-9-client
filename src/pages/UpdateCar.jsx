@@ -1,69 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 
-const AddCar = () => {
+const UpdateCar = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [car, setCar] = useState(null);
   const [success, setSuccess] = useState("");
 
-  const handleAddCar = (e) => {
+  useEffect(() => {
+    fetch(`http://localhost:5000/cars/${id}`)
+      .then((res) => res.json())
+      .then((data) => setCar(data));
+  }, [id]);
+
+  const handleUpdateCar = (e) => {
     e.preventDefault();
     const form = e.target;
 
-    const newCar = {
+    const updatedCar = {
       carModel: form.carModel.value,
       carType: form.carType.value,
       dailyRentalPrice: Number(form.dailyRentalPrice.value),
       location: form.location.value,
       availability: form.availability.value,
-      booking_count: 0,
-      isMyAdded:true,
     };
 
-    fetch("http://localhost:5000/cars", {
-      method: "POST",
+    fetch(`http://localhost:5000/cars/${id}`, {
+      method: "PUT",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify(newCar),
+      body: JSON.stringify(updatedCar),
     })
       .then((res) => res.json())
-      .then((data) => {
-        if (data.insertedId) {
-          setSuccess("Car added successfully!");
-          form.reset();
-        }
+      .then(() => {
+        setSuccess("Car updated successfully!");
+        setTimeout(() => navigate("/my-cars"), 800);
       });
   };
 
+  if (!car) {
+    return <p className="text-center mt-20 text-xl">Loading...</p>;
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-blue-50 py-16 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-red-50 py-16 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-red-500 to-purple-600 text-white text-center py-10 px-4">
-          <h2 className="text-4xl font-bold">Add New Car</h2>
-          <p className="mt-3">Fill up the form to add a new rental car</p>
+        <div className="bg-gradient-to-r from-blue-600 to-red-500 text-white text-center py-10 px-4">
+          <h2 className="text-4xl font-bold">Update Car</h2>
+          <p className="mt-3">Edit your listed car information</p>
         </div>
 
-        <form onSubmit={handleAddCar} className="p-8 md:p-10">
+        <form onSubmit={handleUpdateCar} className="p-8 md:p-10">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="font-semibold">Car Model</label>
               <input
-                list="carModels"
                 name="carModel"
+                defaultValue={car.carModel}
                 className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
                 required
               />
-              <datalist id="carModels">
-                <option value="Toyota Corolla" />
-                <option value="Honda Civic" />
-                <option value="Suzuki Swift" />
-                <option value="Nissan X-Trail" />
-                <option value="Mazda CX-5" />
-                <option value="Mercedes C-Class" />
-                <option value="Audi A4" />
-              </datalist>
             </div>
 
             <div>
               <label className="font-semibold">Car Type</label>
               <select
                 name="carType"
+                defaultValue={car.carType}
                 className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
                 required
               >
@@ -79,27 +81,19 @@ const AddCar = () => {
             <div>
               <label className="font-semibold">Daily Rental Price</label>
               <input
-                list="rentalPrices"
                 type="number"
                 name="dailyRentalPrice"
+                defaultValue={car.dailyRentalPrice}
                 className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
                 required
               />
-              <datalist id="rentalPrices">
-                <option value="3000" />
-                <option value="4000" />
-                <option value="5000" />
-                <option value="6500" />
-                <option value="7200" />
-                <option value="10000" />
-                <option value="12000" />
-              </datalist>
             </div>
 
             <div>
               <label className="font-semibold">Location</label>
               <select
                 name="location"
+                defaultValue={car.location}
                 className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
                 required
               >
@@ -108,6 +102,8 @@ const AddCar = () => {
                 <option value="Sylhet">Sylhet</option>
                 <option value="Rajshahi">Rajshahi</option>
                 <option value="Mymensingh">Mymensingh</option>
+                <option value="Khulna">Khulna</option>
+                <option value="Barishal">Barishal</option>
               </select>
             </div>
 
@@ -115,6 +111,7 @@ const AddCar = () => {
               <label className="font-semibold">Availability Status</label>
               <select
                 name="availability"
+                defaultValue={car.availability}
                 className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
                 required
               >
@@ -125,8 +122,8 @@ const AddCar = () => {
             </div>
           </div>
 
-          <button className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 duration-300 text-white py-3 rounded-xl mt-8 text-lg font-semibold">
-            Add Car
+          <button className="w-full bg-gradient-to-r from-blue-600 to-red-500 hover:from-blue-700 hover:to-red-600 duration-300 text-white py-3 rounded-xl mt-8 text-lg font-semibold">
+            Update Car
           </button>
 
           {success && (
@@ -140,4 +137,4 @@ const AddCar = () => {
   );
 };
 
-export default AddCar;
+export default UpdateCar;
