@@ -16,7 +16,7 @@ const Navbar = () => {
 
         <li>
           <Link to="/available-cars">
-            Available Cars
+            Explore Cars
           </Link>
         </li>
 
@@ -25,7 +25,7 @@ const Navbar = () => {
         </li>
 
         <li>
-          <Link to="/my-cars">My Cars</Link>
+          <Link to="/my-cars">My Bookings</Link>
         </li>
 
         <li>
