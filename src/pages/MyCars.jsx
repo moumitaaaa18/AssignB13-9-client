@@ -27,10 +27,9 @@ const MyCars = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/my-cars",
-      {
-        credentials: "include"
-      })
+    fetch(`http://localhost:5000/my-cars?email=${user.email}`, {
+  credentials: "include",
+})
 
       .then((res) => res.json())
       .then((data) => setCars(data))
