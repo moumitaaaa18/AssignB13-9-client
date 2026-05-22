@@ -1,111 +1,92 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
-
-const carImages = {
-  toyota: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=800",
-  honda: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800",
-  suzuki: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800",
-  mercedes: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800",
-  nissan: "https://images.unsplash.com/photo-1542362567-b07e54358753?w=800",
-  mazda: "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800",
-};
-
-const getCarImage = (car) => {
-  const name = (car.carModel || "").toLowerCase();
-
-  if (name.includes("toyota")) return carImages.toyota;
-  if (name.includes("honda")) return carImages.honda;
-  if (name.includes("suzuki")) return carImages.suzuki;
-  if (name.includes("mercedes")) return carImages.mercedes;
-  if (name.includes("nissan")) return carImages.nissan;
-  if (name.includes("mazda")) return carImages.mazda;
-
-  return "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800";
-};
+import { AuthContext } from "../contexts/AuthContext";
 
 const MyCars = () => {
+  const { user } = useContext(AuthContext);
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/my-cars?email=${user.email}`, {
-  credentials: "include",
-})
+    if (!user?.email) {
+      setCars([]);
+      return;
+    }
 
+    fetch(`http://localhost:5000/my-cars?email=${user.email}`, {
+      credentials: "include",
+    })
       .then((res) => res.json())
-      .then((data) => setCars(data))
-      .catch((error) => console.log(error));
-  }, []);
+      .then((data) => setCars(Array.isArray(data) ? data : []))
+      .catch(() => setCars([]));
+  }, [user]);
 
   const handleDelete = (id) => {
-    const confirmDelete = confirm("Are you sure you want to delete this car?");
+    if (!confirm("Are you sure you want to delete this car?")) return;
 
-    if (confirmDelete) {
-      fetch(`http://localhost:5000/cars/${id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then(() => {
-          const remainingCars = cars.filter((car) => car._id !== id);
-          setCars(remainingCars);
-        });
-    }
+    fetch(`http://localhost:5000/cars/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setCars(cars.filter((car) => car._id !== id));
+      });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-16 px-6 md:px-10">
-      <h2 className="text-4xl font-bold text-center mb-4">My Added Cars</h2>
+    <div className="min-h-screen bg-gray-100 py-10 px-5">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-3">My Added Cars</h2>
 
-      <p className="text-center text-gray-500 mb-12">
-        Manage only the cars you added
-      </p>
-
-      {cars.length === 0 ? (
-        <p className="text-center text-xl text-gray-500">
-          You have not added any car yet.
+        <p className="text-center text-gray-500 mb-10">
+          Manage your own listed cars
         </p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cars.map((car) => (
-            <div
-              key={car._id}
-              className="bg-white rounded-3xl shadow-lg overflow-hidden"
-            >
-              <img
-                src={getCarImage(car)}
-                alt={car.carModel}
-                className="w-full h-52 object-cover"
-              />
 
-              <div className="p-5">
-                <h3 className="text-2xl font-bold">{car.carModel}</h3>
+        {cars.length === 0 ? (
+          <div className="bg-white p-10 rounded-2xl shadow text-center">
+            <h2 className="text-2xl font-bold">No Added Car Found</h2>
+            <p className="text-gray-500 mt-2">
+              You have not added any car yet.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {cars.map((car) => (
+              <div key={car._id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <img
+                  src={car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900"}
+                  alt={car.carModel}
+                  className="w-full h-52 object-cover"
+                />
 
-                <div className="mt-3 space-y-1 text-gray-600">
+                <div className="p-5">
+                  <h2 className="text-2xl font-bold mb-2">{car.carModel}</h2>
                   <p>Type: {car.carType}</p>
                   <p>Price: ৳{car.dailyRentalPrice}/day</p>
+                  <p>Seats: {car.seatCapacity || "N/A"}</p>
                   <p>Location: {car.location}</p>
                   <p>Status: {car.availability}</p>
-                </div>
 
-                <div className="flex gap-3 mt-6">
-                  <Link
-                    to={`/update-car/${car._id}`}
-                    className="flex-1 bg-blue-500 hover:bg-blue-600 duration-300 text-white py-2 rounded-xl text-center"
-                  >
-                    Update
-                  </Link>
+                  <div className="flex gap-3 mt-5">
+                    <Link to={`/update-car/${car._id}`} className="flex-1">
+                      <button className="w-full bg-blue-500 text-white py-2 rounded-xl">
+                        Update
+                      </button>
+                    </Link>
 
-                  <button
-                    onClick={() => handleDelete(car._id)}
-                    className="flex-1 bg-red-500 hover:bg-red-600 duration-300 text-white py-2 rounded-xl"
-                  >
-                    Delete
-                  </button>
+                    <button
+                      onClick={() => handleDelete(car._id)}
+                      className="flex-1 bg-red-500 text-white py-2 rounded-xl"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
