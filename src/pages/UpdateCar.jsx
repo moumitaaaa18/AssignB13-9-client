@@ -7,7 +7,7 @@ const UpdateCar = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/cars/${id}`)
+    fetch(`http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`)
       .then((res) => res.json())
       .then((data) => setCar(data));
   }, [id]);
@@ -26,7 +26,7 @@ const UpdateCar = () => {
       location: form.location.value,
     };
 
-    fetch(`http://localhost:5000/cars/${id}`, {
+    fetch(`http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

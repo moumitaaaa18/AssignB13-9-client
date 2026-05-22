@@ -11,7 +11,7 @@ const Register = () => {
   const [success, setSuccess] = useState("");
 
   const createJWT = (email) => {
-    return fetch("http://localhost:5000/jwt", {
+    return fetch("http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/jwt", {
       method: "POST",
       headers: {
         "content-type": "application/json",

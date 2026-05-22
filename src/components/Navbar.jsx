@@ -6,7 +6,7 @@ const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
 
   const handleLogout = () => {
-    fetch("http://localhost:5000/bookings", {
+    fetch("http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/bookings", {
       method: "DELETE",
     })
       .then((res) => res.json())

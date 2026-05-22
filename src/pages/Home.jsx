@@ -6,7 +6,7 @@ const Home = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
+    fetch("http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars")
       .then((res) => res.json())
       .then((data) => setCars(data.slice(0, 6)))
       .catch((error) => console.log(error));
