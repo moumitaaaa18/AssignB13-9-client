@@ -6,10 +6,12 @@ import CarDetails from "./pages/CarDetails";
 import AddCar from "./pages/AddCar";
 import MyCars from "./pages/MyCars";
 import UpdateCar from "./pages/UpdateCar";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
   return (
     <Routes>
+      <Route path="my-bookings" element={<MyBookings />} />
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="available-cars" element={<AvailableCars />} />
