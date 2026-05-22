@@ -11,7 +11,7 @@ const CarDetails = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`)
+    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);
@@ -40,7 +40,7 @@ const CarDetails = () => {
       status: "Confirmed",
     };
 
-    fetch("http:/https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/bookings", {
+    fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/bookings", {
       method: "POST",
       headers: {
         "content-type": "application/json",

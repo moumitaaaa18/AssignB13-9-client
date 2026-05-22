@@ -13,7 +13,7 @@ const MyBookings = () => {
       return;
     }
 
-    fetch(`http:/https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app//bookings?email=${user.email}`, {
+    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app//bookings?email=${user.email}`, {
       credentials: "include",
     })
       .then((res) => res.json())

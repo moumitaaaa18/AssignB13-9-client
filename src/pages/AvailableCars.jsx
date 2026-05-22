@@ -10,7 +10,7 @@ const AvailableCars = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`http://localhost:5000/cars?search=${search}&type=${type}`)
+    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars?search=${search}&type=${type}`)
       .then((res) => res.json())
       .then((data) => {
         setCars(data.slice(0, 6));

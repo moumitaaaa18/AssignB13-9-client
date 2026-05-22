@@ -72,7 +72,7 @@ const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem("drivefleet-user");
 
-    return fetch("http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/logout", {
+    return fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/logout", {
       method: "POST",
       credentials: "include",
     });

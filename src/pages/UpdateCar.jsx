@@ -26,7 +26,7 @@ const UpdateCar = () => {
       location: form.location.value,
     };
 
-    fetch(`http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`, {
+    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

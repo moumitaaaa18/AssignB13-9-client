@@ -27,7 +27,7 @@ const AddCar = () => {
       isMyAdded: true,
     };
 
-    fetch("http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars", {
+    fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars", {
       method: "POST",
       headers: {
         "content-type": "application/json",
