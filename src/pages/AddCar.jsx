@@ -1,25 +1,38 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const AddCar = () => {
+  const { user } = useContext(AuthContext);
   const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
 
   const handleAddCar = (e) => {
     e.preventDefault();
+    setSuccess("");
+    setError("");
+
     const form = e.target;
 
     const newCar = {
       carModel: form.carModel.value,
+      dailyRentalPrice: parseInt(form.dailyRentalPrice.value),
       carType: form.carType.value,
-      dailyRentalPrice: Number(form.dailyRentalPrice.value),
+      image: form.image.value,
+      seatCapacity: parseInt(form.seatCapacity.value),
       location: form.location.value,
+      description: form.description.value,
       availability: form.availability.value,
+      userEmail: user?.email,
       booking_count: 0,
-      isMyAdded:true,
+      isMyAdded: true,
     };
 
     fetch("http://localhost:5000/cars", {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
       body: JSON.stringify(newCar),
     })
       .then((res) => res.json())
@@ -27,113 +40,106 @@ const AddCar = () => {
         if (data.insertedId) {
           setSuccess("Car added successfully!");
           form.reset();
+        } else {
+          setError("Failed to add car");
         }
-      });
+      })
+      .catch(() => setError("Something went wrong"));
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-blue-50 py-16 px-4">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-        <div className="bg-gradient-to-r from-red-500 to-purple-600 text-white text-center py-10 px-4">
-          <h2 className="text-4xl font-bold">Add New Car</h2>
-          <p className="mt-3">Fill up the form to add a new rental car</p>
-        </div>
+    <div className="min-h-screen bg-gray-50 py-12 px-5">
+      <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+        <h2 className="text-4xl font-bold text-center mb-8">Add New Car</h2>
 
-        <form onSubmit={handleAddCar} className="p-8 md:p-10">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="font-semibold">Car Model</label>
-              <input
-                list="carModels"
-                name="carModel"
-                className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
-                required
-              />
-              <datalist id="carModels">
-                <option value="Toyota Corolla" />
-                <option value="Honda Civic" />
-                <option value="Suzuki Swift" />
-                <option value="Nissan X-Trail" />
-                <option value="Mazda CX-5" />
-                <option value="Mercedes C-Class" />
-                <option value="Audi A4" />
-              </datalist>
-            </div>
+        <p className="text-center text-gray-500 mb-6">
+          For Image URL, copy any car image link from Google/Unsplash/Imgbb and paste it here.
+        </p>
 
-            <div>
-              <label className="font-semibold">Car Type</label>
-              <select
-                name="carType"
-                className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
-                required
-              >
-                <option value="">Select Type</option>
-                <option value="Sedan">Sedan</option>
-                <option value="SUV">SUV</option>
-                <option value="Luxury">Luxury</option>
-                <option value="Sports">Sports</option>
-                <option value="Hatchback">Hatchback</option>
-              </select>
-            </div>
+        {success && (
+          <p className="bg-green-100 text-green-700 p-3 rounded-xl mb-5 text-center font-semibold">
+            {success}
+          </p>
+        )}
 
-            <div>
-              <label className="font-semibold">Daily Rental Price</label>
-              <input
-                list="rentalPrices"
-                type="number"
-                name="dailyRentalPrice"
-                className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
-                required
-              />
-              <datalist id="rentalPrices">
-                <option value="3000" />
-                <option value="4000" />
-                <option value="5000" />
-                <option value="6500" />
-                <option value="7200" />
-                <option value="10000" />
-                <option value="12000" />
-              </datalist>
-            </div>
+        {error && (
+          <p className="bg-red-100 text-red-700 p-3 rounded-xl mb-5 text-center font-semibold">
+            {error}
+          </p>
+        )}
 
-            <div>
-              <label className="font-semibold">Location</label>
-              <select
-                name="location"
-                className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
-                required
-              >
-                <option value="">Select Location</option>
-                <option value="Dhaka">Dhaka</option>
-                <option value="Sylhet">Sylhet</option>
-                <option value="Rajshahi">Rajshahi</option>
-                <option value="Mymensingh">Mymensingh</option>
-              </select>
-            </div>
+        <form onSubmit={handleAddCar} className="grid md:grid-cols-2 gap-5">
+          <input name="carModel" placeholder="Car Name" className="border p-3 rounded-xl" required />
 
-            <div className="md:col-span-2">
-              <label className="font-semibold">Availability Status</label>
-              <select
-                name="availability"
-                className="w-full border mt-2 p-3 rounded-xl outline-none focus:border-red-500"
-                required
-              >
-                <option value="">Select Availability Status</option>
-                <option value="Available">Available</option>
-                <option value="Unavailable">Unavailable</option>
-              </select>
-            </div>
-          </div>
+          <input name="dailyRentalPrice" type="number" placeholder="Daily Rent Price" className="border p-3 rounded-xl" required />
 
-          <button className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 duration-300 text-white py-3 rounded-xl mt-8 text-lg font-semibold">
+          <select name="carType" className="border p-3 rounded-xl" required>
+            <option value="">Select Car Type</option>
+            <option>SUV</option>
+            <option>Sedan</option>
+            <option>Hatchback</option>
+            <option>Luxury</option>
+          </select>
+
+          <select
+  name="image"
+  className="border p-3 rounded-xl"
+  required
+>
+  <option value="">Select Car Image</option>
+
+  <option value="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=900">
+    Toyota Corolla
+  </option>
+
+  <option value="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=900">
+    Honda Civic
+  </option>
+
+  <option value="https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=900">
+    Suzuki Swift
+  </option>
+
+  <option value="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=900">
+    Mercedes C-Class
+  </option>
+
+  <option value="https://images.unsplash.com/photo-1542362567-b07e54358753?w=900">
+    Nissan X-Trail
+  </option>
+
+  <option value="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=900">
+    Mazda CX-5
+  </option>
+</select>
+          <input name="seatCapacity" type="number" placeholder="Seat Capacity" className="border p-3 rounded-xl" required />
+
+          <select name="location" className="border p-3 rounded-xl" required>
+            <option value="">Select Pickup Location</option>
+            <option>Dhaka</option>
+            <option>Sylhet</option>
+            <option>Rajshahi</option>
+            <option>Khulna</option>
+            <option>Chittagong</option>
+            <option>Barishal</option>
+            <option>Rangpur</option>
+          </select>
+
+          <select name="availability" className="border p-3 rounded-xl" required>
+            <option>Available</option>
+            <option>Unavailable</option>
+          </select>
+
+          <textarea
+            name="description"
+            placeholder="Description"
+            className="border p-3 rounded-xl md:col-span-2"
+            required
+          ></textarea>
+
+          <button className="md:col-span-2 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-semibold">
             Add Car
           </button>
-
-          {success && (
-            <p className="text-green-600 text-center mt-5 font-semibold">
-              {success}
-            </p>
-          )}
         </form>
       </div>
     </div>

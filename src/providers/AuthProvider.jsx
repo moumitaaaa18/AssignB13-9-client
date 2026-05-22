@@ -1,30 +1,81 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const registerUser = (email, password) => {
-    const newUser = { email };
+  useEffect(() => {
+    const savedUser = localStorage.getItem("drivefleet-user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const createJwt = (loggedUser) => {
+    return fetch("http://localhost:5000/jwt", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(loggedUser),
+    });
+  };
+
+  const registerUser = (email, password, name = "", photoURL = "") => {
+    const newUser = { email, displayName: name, photoURL };
+
     setUser(newUser);
-    return Promise.resolve(newUser);
+    localStorage.setItem("drivefleet-user", JSON.stringify(newUser));
+
+    return createJwt(newUser).then(() => ({ user: newUser }));
   };
 
   const loginUser = (email, password) => {
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    if (!gmailRegex.test(email)) {
+      return Promise.reject(new Error("Please enter a valid Gmail address"));
+    }
+
     const loggedUser = { email };
+
     setUser(loggedUser);
-    return Promise.resolve(loggedUser);
+    localStorage.setItem("drivefleet-user", JSON.stringify(loggedUser));
+
+    return createJwt(loggedUser).then(() => ({ user: loggedUser }));
   };
 
   const googleLogin = () => {
-    const googleUser = { email: "momo@gmail.com" };
+    const email = prompt("Enter your Gmail address");
+
+    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    if (!email || !gmailRegex.test(email)) {
+      alert("Please enter a valid Gmail address");
+      return Promise.reject(new Error("Invalid Gmail"));
+    }
+
+    const googleUser = {
+      email,
+      displayName: email.split("@")[0],
+      photoURL: "",
+    };
+
     setUser(googleUser);
-    return Promise.resolve(googleUser);
+    localStorage.setItem("drivefleet-user", JSON.stringify(googleUser));
+
+    return createJwt(googleUser).then(() => ({ user: googleUser }));
   };
 
   const logoutUser = () => {
     setUser(null);
-    return Promise.resolve();
+    localStorage.removeItem("drivefleet-user");
+
+    return fetch("http://localhost:5000/logout", {
+      method: "POST",
+      credentials: "include",
+    });
   };
 
   const authInfo = {
