@@ -9,13 +9,15 @@ const Home = () => {
     fetch("https://assign-b13-9-server-e7aluwu1m-moumitaaaa18s-projects.vercel.app/cars")
       .then((res) => res.json())
       .then((data) => {
-  console.log("HOME CARS DATA:", data);
-  setCars(data.slice(0, 6));
-})
-      
+        console.log("CAR DATA:", data);
+        setCars(data.slice(0, 6));
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
     <div className="bg-gray-50">
+
       <section className="bg-gradient-to-r from-slate-900 via-slate-800 to-red-900 text-white py-20 md:py-28 px-5 text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-5">
           Rent Your Perfect Car
@@ -51,37 +53,43 @@ const Home = () => {
 
       <section className="py-20 bg-gray-100">
         <div className="max-w-6xl mx-auto px-5">
+
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-14">
             How DriveFleet Works
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
             <div className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300">
-              <div className="text-5xl mb-5"></div>
-              <h3 className="text-2xl font-bold mb-3">Choose Your Car</h3>
+              <h3 className="text-2xl font-bold mb-3">
+                Choose Your Car
+              </h3>
+
               <p className="text-gray-600 leading-7">
-                Browse from premium sedans, SUVs and luxury cars easily from our
-                collection.
+                Browse from premium sedans, SUVs and luxury cars easily from our collection.
               </p>
             </div>
 
             <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white p-8 rounded-3xl shadow-2xl hover:scale-105 transition duration-300">
-              <div className="text-5xl mb-5"></div>
-              <h3 className="text-2xl font-bold mb-3">Book Instantly</h3>
+              <h3 className="text-2xl font-bold mb-3">
+                Book Instantly
+              </h3>
+
               <p className="leading-7">
-                Select your preferred booking options and reserve your car
-                within seconds.
+                Select your preferred booking options and reserve your car within seconds.
               </p>
             </div>
 
             <div className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300">
-              <div className="text-5xl mb-5"></div>
-              <h3 className="text-2xl font-bold mb-3">Enjoy Your Ride</h3>
+              <h3 className="text-2xl font-bold mb-3">
+                Enjoy Your Ride
+              </h3>
+
               <p className="text-gray-600 leading-7">
-                Pickup the car and enjoy a smooth, comfortable and safe journey
-                anywhere in Bangladesh.
+                Pickup the car and enjoy a smooth, comfortable and safe journey anywhere in Bangladesh.
               </p>
             </div>
+
           </div>
         </div>
       </section>
@@ -92,10 +100,10 @@ const Home = () => {
         </h2>
 
         <p className="max-w-2xl mx-auto text-gray-300">
-          We provide reliable rental cars, affordable prices, easy booking and
-          trusted service for customers across Bangladesh.
+          We provide reliable rental cars, affordable prices, easy booking and trusted service for customers across Bangladesh.
         </p>
       </section>
+
     </div>
   );
 };
