@@ -3,12 +3,23 @@ import { AuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
 
 const Register = () => {
-  const { registerUser } = useContext(AuthContext);
+  const { registerUser, googleLogin } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const createJWT = (email) => {
+    return fetch("http://localhost:5000/jwt", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email }),
+    });
+  };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -40,13 +51,32 @@ const Register = () => {
 
     registerUser(email, password)
       .then(() => {
+        return createJWT(email);
+      })
+      .then(() => {
         setSuccess("Registration Successful!");
 
         form.reset();
 
         setTimeout(() => {
-          navigate("/login");
-        }, 1500);
+          navigate("/");
+        }, 1000);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const handleGoogleRegister = () => {
+    googleLogin()
+      .then((result) => {
+        const email =
+          result?.user?.email || "googleuser@gmail.com";
+
+        return createJWT(email);
+      })
+      .then(() => {
+        navigate("/");
       })
       .catch((err) => {
         setError(err.message);
@@ -56,7 +86,6 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-100 via-white to-purple-100 flex justify-center items-center px-4 py-10">
       <div className="w-full max-w-lg bg-white shadow-2xl rounded-3xl overflow-hidden">
-        
         <div className="bg-gradient-to-r from-red-500 to-purple-600 p-10 text-center text-white">
           <h2 className="text-4xl font-bold">Create Account</h2>
 
@@ -66,7 +95,6 @@ const Register = () => {
         </div>
 
         <form onSubmit={handleRegister} className="p-8">
-
           <div className="mb-5">
             <label className="font-semibold">Full Name</label>
 
@@ -133,6 +161,7 @@ const Register = () => {
 
           <button
             type="button"
+            onClick={handleGoogleRegister}
             className="w-full mt-4 border-2 border-gray-300 hover:bg-gray-100 duration-300 py-3 rounded-xl font-semibold"
           >
             Continue with Google
