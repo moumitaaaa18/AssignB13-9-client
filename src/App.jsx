@@ -10,6 +10,7 @@ import UpdateCar from "./pages/UpdateCar";
 import MyBookings from "./pages/MyBookings";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
   return (
@@ -18,10 +19,42 @@ function App() {
         <Route index element={<Home />} />
         <Route path="available-cars" element={<AvailableCars />} />
         <Route path="cars/:id" element={<CarDetails />} />
-        <Route path="add-car" element={<AddCar />} />
-        <Route path="my-cars" element={<MyCars />} />
-        <Route path="update-car/:id" element={<UpdateCar />} />
-        <Route path="my-bookings" element={<MyBookings />} />
+
+        <Route
+          path="add-car"
+          element={
+            <PrivateRoute>
+              <AddCar />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="my-cars"
+          element={
+            <PrivateRoute>
+              <MyCars />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="my-bookings"
+          element={
+            <PrivateRoute>
+              <MyBookings />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="update-car/:id"
+          element={
+            <PrivateRoute>
+              <UpdateCar />
+            </PrivateRoute>
+          }
+        />
       </Route>
 
       <Route path="/login" element={<Login />} />
