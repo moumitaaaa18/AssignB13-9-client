@@ -28,7 +28,7 @@ const AddCar = () => {
     };
 
     
-    fetch (${import.meta.env.VITE_API_URL}/cars,{
+    fetch ('${import.meta.env.VITE_API_URL}/cars',{
       method: "POST",
       headers: {
         "content-type": "application/json",
