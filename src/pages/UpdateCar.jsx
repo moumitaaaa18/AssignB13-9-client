@@ -8,7 +8,7 @@ const UpdateCar = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:5000/cars/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/cars/${id}`)
       .then((res) => res.json())
       .then((data) => setCar(data));
   }, [id]);
@@ -27,7 +27,7 @@ const UpdateCar = () => {
       location: form.location.value,
     };
 
-    fetch(`http://localhost:5000/cars/${id}`, {
+    fetch(`http://${import.meta.env.VITE_API_URL}/cars/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

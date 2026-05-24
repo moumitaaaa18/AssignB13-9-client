@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const createJwt = (loggedUser) => {
-    return fetch("http://localhost:5000/jwt", {
+    return fetch("http://${import.meta.env.VITE_API_URL}/jwt", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -108,7 +108,7 @@ const AuthProvider = ({ children }) => {
 
     localStorage.removeItem("drivefleet-user");
 
-    return fetch("http://localhost:5000/logout", {
+    return fetch('${import.meta.env.VITE_API_URL}/logout', {
       method: "POST",
       credentials: "include",
     });

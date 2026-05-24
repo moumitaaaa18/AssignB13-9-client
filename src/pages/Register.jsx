@@ -11,7 +11,7 @@ const Register = () => {
   const [success, setSuccess] = useState("");
 
   const createJWT = (email) => {
-    return fetch("http://localhost:5000/jwt", {
+    return fetch('${import.meta.env.VITE_API_URL}/jwt', {
       method: "POST",
       headers: {
         "content-type": "application/json",

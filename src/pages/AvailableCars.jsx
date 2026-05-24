@@ -10,7 +10,7 @@ const AvailableCars = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`http://localhost:5000/cars?search=${search}&type=${type}`)
+    fetch(`${import.meta.env.VITE_API_URL}/cars?search=${search}&type=${type}`)
       .then((res) => res.json())
       .then((data) => {
         setCars(Array.isArray(data) ? data : []);
