@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API =import.meta.env.VITE_API_URL;
+const API = "https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app";
 
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
