@@ -34,9 +34,7 @@ const AvailableCars = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-5">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-3">
-          Available Cars
-        </h2>
+        <h2 className="text-4xl font-bold text-center mb-3">Available Cars</h2>
 
         <p className="text-center text-gray-500 mb-10">
           Search and filter cars based on your need
@@ -69,9 +67,7 @@ const AvailableCars = () => {
         </p>
 
         {cars.length === 0 ? (
-          <div className="bg-white p-10 rounded-2xl shadow text-center">
-            <h2 className="text-2xl font-bold">No Cars Found</h2>
-          </div>
+          <h2 className="text-2xl font-bold text-center">No Cars Found</h2>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {cars.map((car) => (

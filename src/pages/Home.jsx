@@ -6,7 +6,7 @@ const Home = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-  fetch('${import.meta.env.VITE_API_URL}/cars')
+  fetch(`${import.meta.env.VITE_API_URL}/cars`)
     .then((res) => res.json())
     .then((data) => {
       console.log("CAR DATA:", data);

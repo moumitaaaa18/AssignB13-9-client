@@ -27,7 +27,7 @@ const UpdateCar = () => {
       location: form.location.value,
     };
 
-    fetch(`http://${import.meta.env.VITE_API_URL}/cars/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/cars/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
