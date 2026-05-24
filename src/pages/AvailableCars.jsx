@@ -10,13 +10,17 @@ const AvailableCars = () => {
   useEffect(() => {
     setLoading(true);
 
-    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars?search=${search}&type=${type}`)
+    fetch(`http://localhost:5000/cars?search=${search}&type=${type}`)
       .then((res) => res.json())
       .then((data) => {
-        setCars(data.slice(0, 6));
+        setCars(Array.isArray(data) ? data : []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((error) => {
+        console.log(error);
+        setCars([]);
+        setLoading(false);
+      });
   }, [search, type]);
 
   if (loading) {
@@ -30,7 +34,9 @@ const AvailableCars = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-5">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-3">Available Cars</h2>
+        <h2 className="text-4xl font-bold text-center mb-3">
+          Available Cars
+        </h2>
 
         <p className="text-center text-gray-500 mb-10">
           Search and filter cars based on your need
@@ -62,11 +68,17 @@ const AvailableCars = () => {
           Total Cars Found: {cars.length}
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {cars.map((car) => (
-            <CarCard key={car._id} car={car} />
-          ))}
-        </div>
+        {cars.length === 0 ? (
+          <div className="bg-white p-10 rounded-2xl shadow text-center">
+            <h2 className="text-2xl font-bold">No Cars Found</h2>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {cars.map((car) => (
+              <CarCard key={car._id} car={car} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

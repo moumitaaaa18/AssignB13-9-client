@@ -6,13 +6,14 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("drivefleet-user");
+
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
   }, []);
 
   const createJwt = (loggedUser) => {
-    return fetch("http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/jwt", {
+    return fetch("http://localhost:5000/jwt", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -22,38 +23,66 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const registerUser = (email, password, name = "", photoURL = "") => {
-    const newUser = { email, displayName: name, photoURL };
+  const registerUser = (
+    email,
+    password,
+    name = "",
+    photoURL = ""
+  ) => {
+    const newUser = {
+      email,
+      displayName: name,
+      photoURL,
+    };
 
     setUser(newUser);
-    localStorage.setItem("drivefleet-user", JSON.stringify(newUser));
 
-    return createJwt(newUser).then(() => ({ user: newUser }));
+    localStorage.setItem(
+      "drivefleet-user",
+      JSON.stringify(newUser)
+    );
+
+    return createJwt(newUser).then(() => ({
+      user: newUser,
+    }));
   };
 
   const loginUser = (email, password) => {
-    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const gmailRegex =
+      /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
     if (!gmailRegex.test(email)) {
-      return Promise.reject(new Error("Please enter a valid Gmail address"));
+      return Promise.reject(
+        new Error("Please enter a valid Gmail address")
+      );
     }
 
     const loggedUser = { email };
 
     setUser(loggedUser);
-    localStorage.setItem("drivefleet-user", JSON.stringify(loggedUser));
 
-    return createJwt(loggedUser).then(() => ({ user: loggedUser }));
+    localStorage.setItem(
+      "drivefleet-user",
+      JSON.stringify(loggedUser)
+    );
+
+    return createJwt(loggedUser).then(() => ({
+      user: loggedUser,
+    }));
   };
 
   const googleLogin = () => {
     const email = prompt("Enter your Gmail address");
 
-    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const gmailRegex =
+      /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
     if (!email || !gmailRegex.test(email)) {
       alert("Please enter a valid Gmail address");
-      return Promise.reject(new Error("Invalid Gmail"));
+
+      return Promise.reject(
+        new Error("Invalid Gmail")
+      );
     }
 
     const googleUser = {
@@ -63,16 +92,23 @@ const AuthProvider = ({ children }) => {
     };
 
     setUser(googleUser);
-    localStorage.setItem("drivefleet-user", JSON.stringify(googleUser));
 
-    return createJwt(googleUser).then(() => ({ user: googleUser }));
+    localStorage.setItem(
+      "drivefleet-user",
+      JSON.stringify(googleUser)
+    );
+
+    return Promise.resolve({
+      user: googleUser,
+    });
   };
 
   const logoutUser = () => {
     setUser(null);
+
     localStorage.removeItem("drivefleet-user");
 
-    return fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/logout", {
+    return fetch("http://localhost:5000/logout", {
       method: "POST",
       credentials: "include",
     });

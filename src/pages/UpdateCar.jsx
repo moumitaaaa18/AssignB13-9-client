@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
+
 const UpdateCar = () => {
   const { id } = useParams();
   const [car, setCar] = useState(null);
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`http://https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`)
+    fetch(`http://localhost:5000/cars/${id}`)
       .then((res) => res.json())
       .then((data) => setCar(data));
   }, [id]);
@@ -26,7 +27,7 @@ const UpdateCar = () => {
       location: form.location.value,
     };
 
-    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`, {
+    fetch(`http://localhost:5000/cars/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

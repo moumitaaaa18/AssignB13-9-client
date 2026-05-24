@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
+const API = "http://localhost:5000";
+
 const MyCars = () => {
   const { user } = useContext(AuthContext);
   const [cars, setCars] = useState([]);
@@ -12,7 +14,7 @@ const MyCars = () => {
       return;
     }
 
-    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/my-cars?email=${user.email}`, {
+    fetch(`${API}/my-cars?email=${user.email}`, {
       credentials: "include",
     })
       .then((res) => res.json())
@@ -23,7 +25,7 @@ const MyCars = () => {
   const handleDelete = (id) => {
     if (!confirm("Are you sure you want to delete this car?")) return;
 
-    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`, {
+    fetch(`${API}/cars/${id}`, {
       method: "DELETE",
       credentials: "include",
     })
@@ -54,7 +56,10 @@ const MyCars = () => {
             {cars.map((car) => (
               <div key={car._id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
                 <img
-                  src={car.image || "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900"}
+                  src={
+                    car.image ||
+                    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=900"
+                  }
                   alt={car.carModel}
                   className="w-full h-52 object-cover"
                 />

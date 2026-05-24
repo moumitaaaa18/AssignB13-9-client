@@ -2,6 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
+const API = "http://localhost:5000";
+
 const CarDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
@@ -11,7 +13,7 @@ const CarDetails = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/cars/${id}`)
+    fetch(`${API}/cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);
@@ -23,6 +25,11 @@ const CarDetails = () => {
   const handleBooking = (e) => {
     e.preventDefault();
 
+    if (!user?.email) {
+      alert("Please login first");
+      return;
+    }
+
     const form = e.target;
 
     const bookingData = {
@@ -33,14 +40,14 @@ const CarDetails = () => {
       totalPrice: car.dailyRentalPrice,
       location: car.location,
       bookingDate: new Date().toLocaleDateString(),
-      userEmail: user?.email,
-      userName: user?.displayName || user?.email,
+      userEmail: user.email,
+      userName: user?.displayName || user.email,
       driverNeeded: form.driverNeeded.value,
       specialNote: form.specialNote.value,
       status: "Confirmed",
     };
 
-    fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/bookings", {
+    fetch(`${API}/bookings`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -52,6 +59,10 @@ const CarDetails = () => {
       .then((data) => {
         if (data.insertedId) {
           setSuccess("Booking Successful!");
+          setCar({
+            ...car,
+            booking_count: (car.booking_count || 0) + 1,
+          });
           form.reset();
         }
       });

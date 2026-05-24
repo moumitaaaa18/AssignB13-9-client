@@ -6,15 +6,14 @@ const Home = () => {
   const [cars, setCars] = useState([]);
 
   useEffect(() => {
-    fetch("https://assign-b13-9-server-e7aluwu1m-moumitaaaa18s-projects.vercel.app/cars")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("CAR DATA:", data);
-        setCars(data.slice(0, 6));
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
+  fetch("http://localhost:5000/cars")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("CAR DATA:", data);
+      setCars(Array.isArray(data) ? data.slice(0, 6) : []);
+    })
+    .catch((error) => console.log(error));
+}, []);
   return (
     <div className="bg-gray-50">
 

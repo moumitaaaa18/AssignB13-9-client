@@ -2,6 +2,8 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
+const API = "http://localhost:5000";
+
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -10,7 +12,7 @@ const Login = () => {
   const [success, setSuccess] = useState("");
 
   const createJWT = (email) => {
-    return fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/jwt", {
+    return fetch(`${API}/jwt`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -30,21 +32,20 @@ const Login = () => {
     const password = form.password.value;
 
     loginUser(email, password)
+      .then(() => createJWT(email))
       .then(() => {
-        return createJWT(email);
-      })
-      .then(() => {
-        setSuccess("Login Successful!");
-        form.reset();
-        setTimeout(() => navigate("/"), 800);
-      })
+  setSuccess("Login Successful!");
+  form.reset();
+
+  navigate("/");
+})
       .catch((err) => setError(err.message));
   };
 
   const handleGoogleLogin = () => {
     googleLogin()
       .then((result) => {
-        const email = result?.user?.email || "googleuser@gmail.com";
+        const email = result?.user?.email;
         return createJWT(email);
       })
       .then(() => {

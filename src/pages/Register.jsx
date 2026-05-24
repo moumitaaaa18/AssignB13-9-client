@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Register = () => {
   const { registerUser, googleLogin } = useContext(AuthContext);
@@ -11,7 +11,7 @@ const Register = () => {
   const [success, setSuccess] = useState("");
 
   const createJWT = (email) => {
-    return fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/jwt", {
+    return fetch("http://localhost:5000/jwt", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -34,44 +34,25 @@ const Register = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
-    if (!/[A-Z]/.test(password)) {
-      setError("Password must contain an uppercase letter");
-      return;
-    }
-
-    if (!/[a-z]/.test(password)) {
-      setError("Password must contain a lowercase letter");
-      return;
-    }
-
     registerUser(email, password)
       .then(() => {
         return createJWT(email);
       })
       .then(() => {
         setSuccess("Registration Successful!");
-
         form.reset();
 
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        navigate("/");
       })
       .catch((err) => {
         setError(err.message);
       });
   };
 
-  const handleGoogleRegister = () => {
+  const handleGoogleLogin = () => {
     googleLogin()
       .then((result) => {
-        const email =
-          result?.user?.email || "googleuser@gmail.com";
+        const email = result.user.email;
 
         return createJWT(email);
       })
@@ -84,17 +65,19 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-100 via-white to-purple-100 flex justify-center items-center px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 via-white to-red-100 flex justify-center items-center px-4 py-10">
       <div className="w-full max-w-lg bg-white shadow-2xl rounded-3xl overflow-hidden">
-        <div className="bg-gradient-to-r from-red-500 to-purple-600 p-10 text-center text-white">
+
+        <div className="bg-gradient-to-r from-purple-600 to-red-500 p-10 text-center text-white">
           <h2 className="text-4xl font-bold">Create Account</h2>
 
-          <p className="mt-3 text-red-100">
+          <p className="mt-3 text-purple-100">
             Join DriveFleet and start booking cars
           </p>
         </div>
 
         <form onSubmit={handleRegister} className="p-8">
+
           <div className="mb-5">
             <label className="font-semibold">Full Name</label>
 
@@ -102,7 +85,7 @@ const Register = () => {
               type="text"
               name="name"
               placeholder="Enter your full name"
-              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-red-500"
+              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-purple-500"
               required
             />
           </div>
@@ -114,8 +97,7 @@ const Register = () => {
               type="text"
               name="photo"
               placeholder="Enter photo URL"
-              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-red-500"
-              required
+              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-purple-500"
             />
           </div>
 
@@ -126,7 +108,7 @@ const Register = () => {
               type="email"
               name="email"
               placeholder="Enter your email"
-              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-red-500"
+              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-purple-500"
               required
             />
           </div>
@@ -138,7 +120,7 @@ const Register = () => {
               type="password"
               name="password"
               placeholder="Create strong password"
-              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-red-500"
+              className="w-full mt-2 border p-3 rounded-xl outline-none focus:border-purple-500"
               required
             />
           </div>
@@ -155,13 +137,13 @@ const Register = () => {
             </p>
           )}
 
-          <button className="w-full bg-gradient-to-r from-red-500 to-purple-600 hover:from-red-600 hover:to-purple-700 duration-300 text-white py-3 rounded-xl text-lg font-semibold">
+          <button className="w-full bg-gradient-to-r from-purple-600 to-red-500 text-white py-3 rounded-xl text-lg font-semibold">
             Register
           </button>
 
           <button
             type="button"
-            onClick={handleGoogleRegister}
+            onClick={handleGoogleLogin}
             className="w-full mt-4 border-2 border-gray-300 hover:bg-gray-100 duration-300 py-3 rounded-xl font-semibold"
           >
             Continue with Google
@@ -169,13 +151,11 @@ const Register = () => {
 
           <p className="text-center mt-6 text-gray-600">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-red-500 font-semibold"
-            >
+            <Link to="/login" className="text-purple-600 font-semibold">
               Login
             </Link>
           </p>
+
         </form>
       </div>
     </div>

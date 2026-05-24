@@ -2,15 +2,17 @@ import { Link } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
+const API = "http://localhost:5000";
+
 const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
 
   const handleLogout = () => {
-    fetch("https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app/bookings", {
-      method: "DELETE",
+    fetch(`${API}/logout`, {
+      method: "POST",
+      credentials: "include",
     })
-      .then((res) => res.json())
-      .then(() => {
+      .finally(() => {
         logoutUser();
       });
   };
@@ -25,14 +27,27 @@ const Navbar = () => {
         </Link>
 
         <ul className="flex flex-wrap justify-center gap-6 font-medium">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/available-cars">Explore Cars</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+
+          <li>
+            <Link to="/available-cars">Explore Cars</Link>
+          </li>
 
           {user && (
             <>
-              <li><Link to="/add-car">Add Car</Link></li>
-              <li><Link to="/my-cars">My Cars</Link></li>
-              <li><Link to="/my-bookings">My Bookings</Link></li>
+              <li>
+                <Link to="/add-car">Add Car</Link>
+              </li>
+
+              <li>
+                <Link to="/my-cars">My Cars</Link>
+              </li>
+
+              <li>
+                <Link to="/my-bookings">My Bookings</Link>
+              </li>
             </>
           )}
         </ul>
@@ -43,6 +58,7 @@ const Navbar = () => {
               <span className="bg-gray-800 px-4 py-2 rounded-xl text-sm">
                 {user.email}
               </span>
+
               <button
                 onClick={handleLogout}
                 className="bg-red-500 hover:bg-red-600 px-5 py-2 rounded-xl"
@@ -57,6 +73,7 @@ const Navbar = () => {
                   Login
                 </button>
               </Link>
+
               <Link to="/register">
                 <button className="border border-red-500 px-5 py-2 rounded-xl">
                   Register
