@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API = import.meta.env.VITE_API_URL;
-
+const API ="https://assign-b13-9-server.vercel.app";
 const CarDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
@@ -13,7 +12,7 @@ const CarDetails = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    fetch(`${API}/cars/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API = "https://assign-b13-9-server.vercel.app"
+const API = "https://assign-b13-9-server.vercel.app";
 
 const MyCars = () => {
   const { user } = useContext(AuthContext);

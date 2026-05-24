@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API =  "https://assign-b13-9-server.vercel.app";
+const API = import.meta.env.VITE_API_URL;
 
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
@@ -34,11 +34,10 @@ const Login = () => {
     loginUser(email, password)
       .then(() => createJWT(email))
       .then(() => {
-  setSuccess("Login Successful!");
-  form.reset();
-
-  navigate("/");
-})
+        setSuccess("Login Successful!");
+        form.reset();
+        navigate("/");
+      })
       .catch((err) => setError(err.message));
   };
 
@@ -112,7 +111,7 @@ const Login = () => {
           </button>
 
           <p className="text-center mt-6 text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/register" className="text-purple-600 font-semibold">
               Register
             </Link>
