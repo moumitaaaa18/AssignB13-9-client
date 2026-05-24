@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API = "https://assign-b13-9-server-g6yqnhpe1-moumitaaaa18s-projects.vercel.app";
+const API =  "https://assign-b13-9-server.vercel.app";
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);
