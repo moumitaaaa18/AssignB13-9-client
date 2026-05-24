@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API = "http://localhost:5000";
+const API =import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
   const { user, logoutUser } = useContext(AuthContext);

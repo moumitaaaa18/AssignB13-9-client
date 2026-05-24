@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API = "http://localhost:5000";
+const API = import.meta.env.VITE_API_URL;
 
 const CarDetails = () => {
   const { id } = useParams();

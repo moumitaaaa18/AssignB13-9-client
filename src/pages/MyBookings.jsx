@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
-const API = "http://localhost:5000";
+const API =import.meta.env.VITE_API_URL;
 
 const MyBookings = () => {
   const { user } = useContext(AuthContext);

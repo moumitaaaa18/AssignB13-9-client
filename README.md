@@ -1,16 +1,41 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# DriveFleet
 
-Currently, two official plugins are available:
+Live Site: https://assign-b13-9-client.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Project Overview
+DriveFleet is a full-stack car rental platform where users can explore cars, add their own cars, book rides, manage bookings, and update car information easily.
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- User authentication system with email/password and Google login
+- Explore available rental cars with detailed information
+- Add, update and delete personal car listings
+- Booking system for renting cars
+- Private routes for authenticated users
+- Responsive design for mobile, tablet and desktop devices
+- Dynamic car data from MongoDB database
+- Secure JWT authentication with cookies
+- Search and filter functionality for cars
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Client Side
+- React
+- React Router
+- Tailwind CSS
+- Vite
+
+### Server Side
+- Node.js
+- Express.js
+- MongoDB
+- JWT
+- Cookie Parser
+- CORS
+
+## Environment Variables
+
+### Client
+```env
+VITE_API_URL=your_server_url
